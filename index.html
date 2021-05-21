@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <button onclick="connect()">Connect</button>
+  <input type="text" placeholder="Type message...">
+  <button onclick="sendMessage()">Send</button>
+
+  <script>
+    let websocket = null
+    const input = document.querySelector("input")
+
+    function connect(){
+      websocket = new WebSocket('ws://localhost:9000')
+
+      websocket.addEventListener('open', function(){
+        console.log("On client: Connected!")
+      })
+
+      websocket.addEventListener("message", function(event){
+        console.log(event.data)
+      })
+
+      websocket.addEventListener("close", function(){
+        console.log("Disconnected")
+        websocket = null
+      })
+    }
+
+    function sendMessage(){
+      if(websocket){
+        websocket.send(input.value)
+      }
+    }    
+  </script>
+</body>
+</html>
